@@ -57,7 +57,7 @@ cd yomitoku-slimpdf
 
 ### 2. uv をインストール
 
-[Installation | uv](https://docs.astral.sh/uv/getting-started/installation/#pypi) を参考に、Python パッケージ管理ツール [uv](https://github.com/astral-sh/uv) をインストールする。
+[uv をインストール](https://docs.astral.sh/uv/getting-started/installation/#pypi) する。
 
 ### 3. PyTorch GPU 依存を更新する
 
@@ -90,7 +90,7 @@ uv run python -c "import torch; print(torch.cuda.is_available())"
 
 JBIG2 圧縮に使うネイティブツール [jbig2enc](https://github.com/agl/jbig2enc) をインストールする。
 
-#### Windows
+**Windows**
 
 exe ファイルをプロジェクトルート直下に展開する。
 
@@ -105,7 +105,7 @@ Remove-Item "jbig2enc-0.31-Windows-X64-MSVC.zip"
 # -> jbig2enc 0.31
 ```
 
-#### Linux（Ubuntu 24+, Debian 13+）
+**Linux（Ubuntu 24+, Debian 13+）**
 
 ```bash
 sudo apt install jbig2
