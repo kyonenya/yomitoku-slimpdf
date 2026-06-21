@@ -24,7 +24,7 @@ uv run yomi.py sample/out -o sample/yomitoku/sample.pdf --dpi 300 --chunk 2
 ```
 
 - 引数に `*.tif` が含まれるフォルダを指定する
-- `--output` / `-o` で出力 PDF のパスを指定できる。省略時は `./output.pdf`
+- `--output` / `-o` で出力 PDF のパスを指定できる（省略時は `./output.pdf`）
 - `--dpi` で出力される PDF の DPI を指定できる
 - `--chunk` で YomiToku の OCR 処理を n 等分して実行できる（メモリリーク対策）
 
