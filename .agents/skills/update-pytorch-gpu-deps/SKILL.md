@@ -23,7 +23,7 @@ description: uv 管理の Python プロジェクトで PyTorch GPU 依存を pyp
 
 2. GPUとOSを判定する。
    - NVIDIA GPU なら CUDA 分岐へ進む。可能なら `nvidia-smi` を実行する。
-   - AMD Radeon なら ROCm 分岐へ進む。Windows と Linux で手順が違うので、OSを必ず確認する。
+   - AMD Radeon なら ROCm 分岐へ進む。Windows と Linux で確認コマンドも手順も違うので、OSを必ず確認する。実機GPUの確認は、Linux なら `rocminfo`（gfxアーキ確認）/ `rocm-smi` / `amd-smi`、Windows なら PowerShell の `Get-CimInstance Win32_VideoController | Select-Object Name`。詳細と読み方は各分岐（手順4・5）に書く。
    - GPUを使わない、または使えない場合は CPU 分岐へ進む。
    - GPUが不明、複数候補がある、または手順書から外れるGPUの場合は、変更前にユーザーへ確認する。
 
@@ -51,6 +51,7 @@ description: uv 管理の Python プロジェクトで PyTorch GPU 依存を pyp
      ```
 
 4. AMD Radeon ROCm on Linux の場合。
+   - まず実機のGPUを確認する。`rocminfo | grep -i gfx` で **gfxアーキテクチャ**（例: `gfx1030`=RX6000系/RDNA2、`gfx1100`・`gfx1101`=RX7000系/RDNA3、`gfx1201`=RX9000系/RDNA4、`gfx90a`=MI200、`gfx942`=MI300）を読む。これがROCm wheelの対応可否を決める最重要情報で、NVIDIAの「CUDA version上限」に相当する。GPUの状態は `rocm-smi`、新しめの環境なら `amd-smi list` / `amd-smi static` でも見られる。`rocminfo` が無い（ROCm未導入）なら、最低限 `lspci -nn | grep -iE "VGA|3D|Display"` でAMD GPUの存在と型番を確認する。選んだ `rocmX.Y` がそのgfxに対応しているかをROCmの対応表で確認し、外れていれば書き換え前にユーザーへ伝える。
    - まず `https://pytorch.org/get-started/locally/` と `https://pytorch.org/get-started/previous-versions/` を見る。Linux + Pip + ROCm の公式行から、`torch` / `torchvision`（必要なら `torchaudio`）の対応バージョンと `rocmX.Y` tag を選ぶ。
    - 必要なら `https://download.pytorch.org/whl/<rocm-tag>/{torch,torchvision}/` で、選んだバージョンに `requires-python` とローカルPython（cp311 など）・プラットフォーム（linux_x86_64 など）の wheel が実在するか確認する。
    - Linux ROCm wheel は次の形で `pyproject.toml` に反映する。
@@ -72,6 +73,7 @@ description: uv 管理の Python プロジェクトで PyTorch GPU 依存を pyp
      ```
 
 5. AMD Radeon ROCm on Windows の場合。
+   - まず実機のGPUを確認する。PowerShell で `Get-CimInstance Win32_VideoController | Select-Object Name` を実行し、Radeonの型番を読む（ドライバ/ROCm導入済みなら `amd-smi list` / `amd-smi static` でも確認できる）。Windows の ROCm は対応GPU・Python版・ROCm版の制約が強いので、読み取った型番を必ず下記のAMD公式 互換性表と突き合わせ、対応外なら書き換え前にユーザーへ伝える。gfxアーキは torch 導入後に `python -m torch.utils.collect_env` の "GPU models and configuration"（例: `gfx1201`）でも確認できる。
    - PyTorch公式の汎用selectorではなく、AMD公式の Radeon/Ryzen 向け手順を正とする。
    - 参照先:
      - `https://rocm.docs.amd.com/projects/radeon-ryzen/en/latest/docs/install/installrad/windows/install-pytorch.html`
@@ -140,7 +142,14 @@ description: uv 管理の Python プロジェクトで PyTorch GPU 依存を pyp
 
    - 検証結果の見方も伝える。
      - NVIDIA CUDA は `torch.cuda.is_available()` が `True` になり、`torch.version.cuda` が選んだ wheel 系列（たとえば `12.6`、`12.8`、`13.0`）と合っていれば成功。
-     - ROCm build でもPyTorch API上は `torch.cuda.is_available()` を使うことがある。Radeonの場合は、AMD公式docsの検証手順を優先し、device名がRadeonになっているかも確認するよう提案する。
+     - ROCm build でもPyTorch API上は `torch.cuda.is_available()`（`True` なら成功）を使う。Radeonの場合はAMD公式docsの検証手順を優先しつつ、加えて次で実機GPUが見えているかを確認するよう提案する。
+
+       ```powershell
+       uv run python -c "import torch; print(torch.cuda.is_available()); print(torch.cuda.get_device_name(0))"
+       uv run python -m torch.utils.collect_env
+       ```
+
+       `get_device_name(0)` にRadeonの型番が出て、`collect_env` の "GPU models and configuration" に想定どおりの gfx（例: `gfx1100`、`gfx1201`）が出ていれば成功。
      - CPU wheel は `torch.cuda.is_available()` が `False`、`torch.version.cuda` が `None` で正常。
 
 ## 注意
