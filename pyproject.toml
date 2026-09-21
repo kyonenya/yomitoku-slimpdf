@@ -4,7 +4,7 @@ version = "0.0.0"
 description = "YomiTokuで検索可能PDFを生成し、ページ画像を白黒JBIG2に差し替えてサイズを削減する"
 requires-python = ">=3.11,<3.14"
 dependencies = [
-    "yomitoku==0.13.0",
+    "yomitoku==0.15.0",
     "torch==2.8.0",
     "torchvision==0.23.0",
     "pikepdf",

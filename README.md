@@ -35,6 +35,10 @@ uv run yomi.py sample/out -o sample/yomitoku/sample.pdf --dpi 300 --chunk 2
 Windows
 
 ```powershell
+.\yomi.ps1 sample
+```
+
+```powershell
 .\yomi.ps1 sample --dpi 300 --chunk 2
 ```
 
