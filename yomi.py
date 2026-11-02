@@ -290,14 +290,19 @@ def main() -> int:
         )
 
     # 全ページの背景画像をJBIG2へ一括で差し替える
-    print(f"Replacing backgrounds with JBIG2 ({len(tifs)} pages)", flush=True)
     with tempfile.TemporaryDirectory(prefix="otsu_tif_") as tmp_dir:
-        for tif, page in zip(tifs, merged.pages):
+        for idx, (tif, page) in enumerate(zip(tifs, merged.pages), start=1):
+            print(
+                f"\rReplacing backgrounds with JBIG2 [{idx}/{len(tifs)}]",
+                end="",
+                flush=True,
+            )
             otsu_tif = make_otsu_tif(tif, Path(tmp_dir), target_dpi=args.dpi)
             replace_page_jbig2_background(
                 merged, page, encode_jbig2(otsu_tif), otsu_tif
             )
             correct_physical_page_size(merged, page, tif)
+    print()
 
     # 最終PDFとして保存する
     merged.remove_unreferenced_resources()
