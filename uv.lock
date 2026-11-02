@@ -1406,7 +1406,7 @@ wheels = [
 
 [[package]]
 name = "yomitoku"
-version = "0.15.0"
+version = "0.15.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "huggingface-hub" },
@@ -1427,9 +1427,9 @@ dependencies = [
     { name = "torch" },
     { name = "torchvision" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ed/d2/fe580f63daacbf9dc376b875f81ea06bae1246bedf4e6bafd5107f8c2ee0/yomitoku-0.15.0.tar.gz", hash = "sha256:389af661a66bb1eb2567d7b484a9059265fe354ad528e9ecbc658c74c98c10cf", size = 72664282, upload-time = "2026-09-14T06:34:34.094Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c5/d2/d32714c833187ee5245fe72fd2e2fbecd0a9b3c1f9535ec7abfbabc3cf1a/yomitoku-0.15.1.tar.gz", hash = "sha256:c70b04d1e846592050cb9955100d0aa118a06c141b25bdda361ca9dad4e3ce2e", size = 72676477, upload-time = "2026-10-20T05:42:24.401Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/6b/73/9bb8125db3bca9e3b702a7106f964951208b4a6e257811aa478105577e3d/yomitoku-0.15.0-py3-none-any.whl", hash = "sha256:2fbb82aa04b7e5c03569f7ab48d968c08ee74c4c2d8c4b17ae39b612b29ea55a", size = 8209305, upload-time = "2026-09-14T06:34:28.044Z" },
+    { url = "https://files.pythonhosted.org/packages/64/c3/8b48382cf0a19492ecedea25063765c707486144a1f250ed3aceae7b281a/yomitoku-0.15.1-py3-none-any.whl", hash = "sha256:b3b4cfcffd0c407611f27b38c1b19a9fc03f057eba7ba3af1102cad7fc8a913c", size = 8210565, upload-time = "2026-10-20T05:42:18.314Z" },
 ]
 
 [[package]]
@@ -1462,7 +1462,7 @@ requires-dist = [
     { name = "pillow" },
     { name = "torch", specifier = "==2.8.0", index = "https://download.pytorch.org/whl/cu126" },
     { name = "torchvision", specifier = "==0.23.0", index = "https://download.pytorch.org/whl/cu126" },
-    { name = "yomitoku", specifier = "==0.15.0" },
+    { name = "yomitoku", specifier = "==0.15.1" },
 ]
 
 [package.metadata.requires-dev]
